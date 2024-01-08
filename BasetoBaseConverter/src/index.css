@@ -1,0 +1,42 @@
+.centered-container {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+  }
+  
+  .content-container {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    width: 35%;
+    padding: 70px;
+    border-radius: 20px;
+    box-shadow: 0 0 2000px rgba(114,147,204,0.5);
+  }
+
+  
+  .inputText {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    appearance: none;
+    border: none;
+    display: flex;
+    text-align: center;
+    align-self: center;
+    outline: none;
+    border-bottom: .2em solid rgba(114,147,204);
+    background: rgb(135,192,167, 0.2);
+    border-radius: .2em .2em 0 0;
+    padding: .4em;
+    padding: 18px;    
+    width: 50%;
+    font-size: 15px;
+    color: rgba(114,147,204);
+    box-sizing: border-box;
+    margin-bottom: 15px;
+  }
+
+  .errorBoxVal{
+    font-size: large;
+    color: red;
+    font-weight: bold;  
+  }
