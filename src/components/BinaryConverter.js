@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-class Inputer extends React.Component {
+class BinaryConverter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -88,6 +89,10 @@ class Inputer extends React.Component {
     </h3> 
     <input type="text" onChange={this.convertDec} id="dec" className="inputText" placeholder='Decimal Number'/>   
     <div className='errorBoxVal' id='errorBox'></div> 
+    <br/><br/><br/>
+    <Link to="/" className="button-62">
+              Home
+    </Link>
     </center>
 </div>
       </div>
@@ -95,5 +100,5 @@ class Inputer extends React.Component {
   }
 }
 
-export default Inputer;
+export default BinaryConverter;
 
