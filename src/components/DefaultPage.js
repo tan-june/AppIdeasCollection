@@ -11,11 +11,14 @@ const DefaultPage = () => {
             <Link to="/binary-exchange" className="button-62">
               Binary Exchange
             </Link>
-            <Link to="/dollar-to-cents" className="button-62">
-              Dollar to Cents ****not done
-            </Link>
             <Link to="/border-radius" className="button-62">
               Border Radius Displayer
+            </Link>
+            <Link to="/flip-image" className="button-62">
+              Flip Image
+            </Link>
+            <Link to="/dollar-to-cents" className="button-62">
+              Dollar to Cents ****not done
             </Link>
       </div>
     </div>

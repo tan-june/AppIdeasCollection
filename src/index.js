@@ -6,6 +6,7 @@ import ConvertDollartoCents from './components/ConvertDollartoCents';
 import DefaultPage from './components/DefaultPage'
 import BorderRadiusDisplayer from './components/BorderRadiusDisplayer'
 import './index.css';
+import FlipHorizontalorVertical from './components/FlipHorizontalorVertical';
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/binary-exchange" element={<BinaryConverter />} />
         <Route path="/dollar-to-cents" element={<ConvertDollartoCents />} />
         <Route path="/border-radius" element={<BorderRadiusDisplayer />} />
+        <Route path="/flip-image" element={<FlipHorizontalorVertical />} />
         <Route path="*" element={<DefaultPage />} />
       </Routes>
     </Router>
