@@ -17,13 +17,13 @@ const DefaultPage = () => {
             <Link to="/dollar-to-cents" className="button-62">
               Dollar to Cents
             </Link>
-            <Link to="/flip-image" className="button-62">
+            {/* <Link to="/flip-image" className="button-62">
               Flip Image
-            </Link>
-            {/* <Link to="/lorem-ipsum" className="button-62">
+            </Link> */}
+            <Link to="/lorem-ipsum" className="button-62">
               Lorem Ipsum
             </Link>
-            <Link to="/github-status" className="button-62">
+            {/* <Link to="/github-status" className="button-62">
               Github Status
             </Link> */}
             </center>
