@@ -7,6 +7,8 @@ import DefaultPage from './components/DefaultPage'
 import BorderRadiusDisplayer from './components/BorderRadiusDisplayer'
 import './index.css';
 import FlipHorizontalorVertical from './components/FlipHorizontalorVertical';
+import LoremIpsumGenerator from './components/LoremIpsum';
+import GithubStatus from './components/GithubStatus';
 
 const App = () => {
   return (
@@ -16,6 +18,8 @@ const App = () => {
         <Route path="/dollar-to-cents" element={<ConvertDollartoCents />} />
         <Route path="/border-radius" element={<BorderRadiusDisplayer />} />
         <Route path="/flip-image" element={<FlipHorizontalorVertical />} />
+        <Route path="/lorem-ipsum" element={<LoremIpsumGenerator />} />
+        <Route path="/github-status" element={<GithubStatus />} />
         <Route path="*" element={<DefaultPage />} />
       </Routes>
     </Router>
