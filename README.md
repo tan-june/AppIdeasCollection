@@ -20,7 +20,7 @@ In the case, the website is down. Follow below.
 
 1. **Install Dependencies:**
 
-   Run the following command in both the server and client directories:
+   Run the following command(s) in the cloned directory:
 
    ```bash
    npm install
