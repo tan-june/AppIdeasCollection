@@ -1,6 +1,5 @@
 import React from 'react';
 import upload from './upload.png';
-import Jimp from 'jimp';
 
 class FlipHorizontalorVertical extends React.Component {
   constructor(props) {
@@ -9,7 +8,7 @@ class FlipHorizontalorVertical extends React.Component {
       selectedFile: null,
     };
   }
-  
+
   handleRemoveImage = () => {
     this.setState({
       selectedFile: null,
@@ -17,75 +16,92 @@ class FlipHorizontalorVertical extends React.Component {
   };
 
   handleVertical = () => {
-    if (this.state.selectedFile) {
-      Jimp.read(URL.createObjectURL(this.state.selectedFile))
-        .then(image => {
-          image.flip(false, true); // Flip vertically
-          const modifiedImage = image.getBase64Async(Jimp.AUTO);
-          return modifiedImage;
-        })
-        .then(modifiedImage => {
-          this.setState({ selectedFile: modifiedImage });
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    }
+    this.handleFlip(true, false);
   };
-  
+
   handleHorizontal = () => {
-    if (this.state.selectedFile) {
-      Jimp.read(URL.createObjectURL(this.state.selectedFile))
-        .then(image => {
-          image.flip(true, false); // Flip horizontally
-          const modifiedImage = image.getBase64Async(Jimp.AUTO);
-          return modifiedImage;
-        })
-        .then(modifiedImage => {
-          this.setState({ selectedFile: modifiedImage });
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    }
+    this.handleFlip(false, true);
   };
-  
+
   positiveRotate = () => {
-    if (this.state.selectedFile) {
-      Jimp.read(URL.createObjectURL(this.state.selectedFile))
-        .then(image => {
-          const angle = 15;
-          image.rotate(angle);
-          const modifiedImage = image.getBase64Async(Jimp.AUTO);
-          return modifiedImage;
-        })
-        .then(modifiedImage => {
-          this.setState({ selectedFile: modifiedImage });
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    }
+    this.handleRotate(15);
   };
-  
+
   negativeRotate = () => {
-    if (this.state.selectedFile) {
-      Jimp.read(URL.createObjectURL(this.state.selectedFile))
-        .then(image => {
-          const angle = -15;
-          image.rotate(angle);
-          const modifiedImage = image.getBase64Async(Jimp.AUTO);
-          return modifiedImage;
-        })
-        .then(modifiedImage => {
-          this.setState({ selectedFile: modifiedImage });
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    }
+    this.handleRotate(-15);
   };
   
+  downloadImage = () => {
+    if (this.state.selectedFile) {
+      const downloadLink = document.createElement('a');
+      downloadLink.href = URL.createObjectURL(this.state.selectedFile);
+      downloadLink.download = 'modified_image.png';
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    }
+  };
+
+  handleFlip = (horizontal, vertical) => {
+    if (this.state.selectedFile && this.state.selectedFile instanceof Blob) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+
+          canvas.width = img.width;
+          canvas.height = img.height;
+
+          if (horizontal || vertical) {
+            ctx.translate(horizontal ? img.width : 0, vertical ? img.height : 0);
+            ctx.scale(horizontal ? -1 : 1, vertical ? -1 : 1);
+          }
+
+          ctx.drawImage(img, 0, 0, img.width, img.height);
+
+          canvas.toBlob((blob) => {
+            this.setState({ selectedFile: blob });
+          }, 'image/png');
+        };
+
+        img.src = event.target.result;
+      };
+
+      reader.readAsDataURL(this.state.selectedFile);
+      this.downloadImage();
+    }
+  };
+
+  handleRotate = (angle) => {
+    if (this.state.selectedFile && this.state.selectedFile instanceof Blob) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+
+          canvas.width = img.height;
+          canvas.height = img.width;
+
+          ctx.translate(img.height / 2, img.width / 2);
+          ctx.rotate((angle * Math.PI) / 180);
+          ctx.drawImage(img, -img.width / 2, -img.height / 2, img.width, img.height);
+
+          canvas.toBlob((blob) => {
+            this.setState({ selectedFile: blob });
+          }, 'image/png');
+        };
+
+        img.src = event.target.result;
+      };
+
+      reader.readAsDataURL(this.state.selectedFile);
+      this.downloadImage();
+    }
+  };
 
   handleDrop = (e) => {
     e.preventDefault();
@@ -104,61 +120,68 @@ class FlipHorizontalorVertical extends React.Component {
     });
   };
 
- render() {
+  render() {
+    let imageElement = null;
+
+    if (this.state.selectedFile instanceof File) {
+      try {
+        imageElement = (
+          <img
+            src={URL.createObjectURL(this.state.selectedFile)}
+            alt="Uploaded"
+            style={{ width: '60%', height: '30%', marginBottom: '20px' }}
+          />
+        );
+      } catch (error) {
+        console.error("Error creating object URL:", error);
+        this.setState({ selectedFile: null });
+      }
+    }
+
     return (
       <div className="centered-container">
         <div className="content-container">
           <h1 style={{ textAlign: 'center' }}>Flip Image</h1>
           <h3 style={{ textAlign: 'center', color: 'red' }}>Upload Image to modify.</h3>
-  
+
           <div style={{ borderRadius: '60px', padding: '20px', border: '3px solid #87c0a7', marginTop: '40px', textAlign: 'center' }}>
-  
+            {imageElement}
+
             {this.state.selectedFile && (
-              <div style={{ margin: '20px auto', textAlign: 'center' }}>
-                <img
-                  src={URL.createObjectURL(this.state.selectedFile)}
-                  alt="Uploaded"
-                  style={{ width: '60%', height: '30%', marginBottom: '20px' }}
-                />
-  
-                <div style={{ margin: '20px auto', textAlign: 'center', display: 'flex' }}>
+              <div style={{ margin: '20px auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                <button
+                  className='button-62'
+                  onClick={this.handleRemoveImage}
+                >
+                  Remove Image
+                </button>
+
+                <div style={{ margin: '20px auto', display: 'flex', justifyContent: 'center' }}>
                   <button
                     className='button-62'
-                    style={{ textAlign: 'center', display: 'flex', margin: '0 auto', marginBottom: '10px' }}
-                    onClick={this.handleRemoveImage}
-                  >
-                    Remove Image
-                  </button>
-                </div>
-                <div style={{ margin: '20px auto', textAlign: 'center', display: 'flex' }}>
-                  <button
-                    className='button-62'
-                    style={{ textAlign: 'center', display: 'flex', margin: '0 auto', marginBottom: '10px' }}
                     onClick={this.handleHorizontal}
                   >
                     Flip Horizontal
                   </button>
-  
+
                   <button
                     className='button-62'
-                    style={{ textAlign: 'center', display: 'flex', margin: '0 auto', marginBottom: '10px' }}
                     onClick={this.handleVertical}
                   >
                     Flip Vertical
                   </button>
                 </div>
-                <div style={{ textAlign: 'center', display: 'flex' }}>
+
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <button
                     className='button-62'
-                    style={{ textAlign: 'center', display: 'flex', margin: '0 auto', marginBottom: '10px' }}
                     onClick={this.negativeRotate}
                   >
                     Rotate -15°
                   </button>
-  
+
                   <button
                     className='button-62'
-                    style={{ textAlign: 'center', display: 'flex', margin: '0 auto', marginBottom: '10px' }}
                     onClick={this.positiveRotate}
                   >
                     Rotate 15°
@@ -166,7 +189,7 @@ class FlipHorizontalorVertical extends React.Component {
                 </div>
               </div>
             )}
-  
+
             {!this.state.selectedFile && (
               <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div
@@ -179,7 +202,7 @@ class FlipHorizontalorVertical extends React.Component {
                   <img src={upload} width='80px' alt="Upload here." />
                   <p>Drag your image to this <i>drop zone</i> or click to <i>upload</i>.</p>
                 </div>
-  
+
                 <input
                   id="fileInput"
                   type="file"
@@ -189,7 +212,6 @@ class FlipHorizontalorVertical extends React.Component {
                 />
               </div>
             )}
-  
           </div>
         </div>
       </div>
