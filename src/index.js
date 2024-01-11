@@ -10,6 +10,7 @@ import FlipHorizontalorVertical from './components/FlipHorizontalorVertical';
 import LoremIpsumGenerator from './components/LoremIpsum';
 import GithubStatus from './components/GithubStatus';
 import StrongPassGenerator from './components/StrongPassGenerator'
+import CurrencyConverter from './components/CurrencyConverter';
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/lorem-ipsum" element={<LoremIpsumGenerator />} />
         <Route path="/github-status" element={<GithubStatus />} />
         <Route path="/password-generator" element={<StrongPassGenerator />} />
+        <Route path="/currency-converter" element={<CurrencyConverter />} />
         <Route path="*" element={<DefaultPage />} />
       </Routes>
     </Router>

@@ -29,6 +29,9 @@ const DefaultPage = () => {
             <Link to="/password-generator" className="button-62">
               Password Generator
             </Link>
+            <Link to="/currency-converter" className="button-62">
+              Currency Converter
+            </Link>
             </center>
       </div>
     </div>
