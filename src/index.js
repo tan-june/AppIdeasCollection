@@ -9,6 +9,7 @@ import './index.css';
 import FlipHorizontalorVertical from './components/FlipHorizontalorVertical';
 import LoremIpsumGenerator from './components/LoremIpsum';
 import GithubStatus from './components/GithubStatus';
+import StrongPassGenerator from './components/StrongPassGenerator'
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/flip-image" element={<FlipHorizontalorVertical />} />
         <Route path="/lorem-ipsum" element={<LoremIpsumGenerator />} />
         <Route path="/github-status" element={<GithubStatus />} />
+        <Route path="/password-generator" element={<StrongPassGenerator />} />
         <Route path="*" element={<DefaultPage />} />
       </Routes>
     </Router>

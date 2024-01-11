@@ -26,6 +26,9 @@ const DefaultPage = () => {
             {/* <Link to="/github-status" className="button-62">
               Github Status
             </Link> */}
+            <Link to="/password-generator" className="button-62">
+              Password Generator
+            </Link>
             </center>
       </div>
     </div>
