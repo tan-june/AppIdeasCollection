@@ -42,6 +42,23 @@ class FlipHorizontalorVertical extends React.Component {
     }
   };
 
+  handleDrop = (e) => {
+    e.preventDefault();
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile) {
+      this.setState({
+        selectedFile: droppedFile,
+      });
+    }
+  };
+
+  handleFileChange = (e) => {
+    const file = e.target.files[0];
+    this.setState({
+      selectedFile: file,
+    });
+  };
+
   handleFlip = (horizontal, vertical) => {
     if (this.state.selectedFile && this.state.selectedFile instanceof Blob) {
       const reader = new FileReader();
@@ -62,7 +79,10 @@ class FlipHorizontalorVertical extends React.Component {
           ctx.drawImage(img, 0, 0, img.width, img.height);
 
           canvas.toBlob((blob) => {
-            this.setState({ selectedFile: blob });
+            this.setState({ selectedFile: blob }, () => {
+              this.downloadImage();
+              this.handleRemoveImage();
+            });
           }, 'image/png');
         };
 
@@ -70,7 +90,6 @@ class FlipHorizontalorVertical extends React.Component {
       };
 
       reader.readAsDataURL(this.state.selectedFile);
-      this.downloadImage();
     }
   };
 
@@ -91,7 +110,10 @@ class FlipHorizontalorVertical extends React.Component {
           ctx.drawImage(img, -img.width / 2, -img.height / 2, img.width, img.height);
 
           canvas.toBlob((blob) => {
-            this.setState({ selectedFile: blob });
+            this.setState({ selectedFile: blob }, () => {
+              this.downloadImage();
+              this.handleRemoveImage();
+            });
           }, 'image/png');
         };
 
@@ -99,25 +121,7 @@ class FlipHorizontalorVertical extends React.Component {
       };
 
       reader.readAsDataURL(this.state.selectedFile);
-      this.downloadImage();
     }
-  };
-
-  handleDrop = (e) => {
-    e.preventDefault();
-    const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile) {
-      this.setState({
-        selectedFile: droppedFile,
-      });
-    }
-  };
-
-  handleFileChange = (e) => {
-    const file = e.target.files[0];
-    this.setState({
-      selectedFile: file,
-    });
   };
 
   render() {
@@ -129,7 +133,12 @@ class FlipHorizontalorVertical extends React.Component {
           <img
             src={URL.createObjectURL(this.state.selectedFile)}
             alt="Uploaded"
-            style={{ width: '60%', height: '30%', marginBottom: '20px' }}
+            style={{
+              width: '60%',
+              height: '30%',
+              marginBottom: '20px',
+              border: '3px solid black', 
+             }}
           />
         );
       } catch (error) {
@@ -144,19 +153,19 @@ class FlipHorizontalorVertical extends React.Component {
           <h1 style={{ textAlign: 'center' }}>Flip Image</h1>
           <h3 style={{ textAlign: 'center', color: 'red' }}>Upload Image to modify.</h3>
 
-          <div style={{ borderRadius: '60px', padding: '20px', border: '3px solid #87c0a7', marginTop: '40px', textAlign: 'center' }}>
+          <div style={{ border: '3px solid #fff', borderRadius: '60px', padding: '20px', border: '3px solid #87c0a7', marginTop: '40px', textAlign: 'center' }}>
             {imageElement}
 
             {this.state.selectedFile && (
               <div style={{ margin: '20px auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                <button
+                
+               <button
                   className='button-62'
                   onClick={this.handleRemoveImage}
                 >
                   Remove Image
                 </button>
 
-                <div style={{ margin: '20px auto', display: 'flex', justifyContent: 'center' }}>
                   <button
                     className='button-62'
                     onClick={this.handleHorizontal}
@@ -170,9 +179,8 @@ class FlipHorizontalorVertical extends React.Component {
                   >
                     Flip Vertical
                   </button>
-                </div>
+            
 
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <button
                     className='button-62'
                     onClick={this.negativeRotate}
@@ -186,8 +194,7 @@ class FlipHorizontalorVertical extends React.Component {
                   >
                     Rotate 15°
                   </button>
-                </div>
-              </div>
+</div>
             )}
 
             {!this.state.selectedFile && (
